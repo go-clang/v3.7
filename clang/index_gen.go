@@ -181,7 +181,7 @@ func (i Index) TranslationUnit2(astFilename string, outTU *TranslationUnit) Erro
 }
 
 // Same as clang_parseTranslationUnit2, but returns the CXTranslationUnit instead of an error code. In case of an error this routine returns a NULL CXTranslationUnit, without further detailed error codes.
-func (i Index) ParseTranslationUnit(sourceFilename string, commandLineArgs []string, unsavedFiles []UnsavedFile, options uint16) TranslationUnit {
+func (i Index) ParseTranslationUnit(sourceFilename string, commandLineArgs []string, unsavedFiles []UnsavedFile, options uint32) TranslationUnit {
 	ca_commandLineArgs := make([]*C.char, len(commandLineArgs))
 	var cp_commandLineArgs **C.char
 	if len(commandLineArgs) > 0 {

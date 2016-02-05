@@ -369,8 +369,8 @@ func (c Cursor) Argument(i uint16) Cursor {
 
 	The value 3 would be returned from this call.
 */
-func (c Cursor) NumTemplateArguments() int16 {
-	return int16(C.clang_Cursor_getNumTemplateArguments(c.c))
+func (c Cursor) NumTemplateArguments() int32 {
+	return int32(C.clang_Cursor_getNumTemplateArguments(c.c))
 }
 
 /*
@@ -389,7 +389,7 @@ func (c Cursor) NumTemplateArguments() int16 {
 	For I = 0, 1, and 2, Type, Integral, and Integral will be returned,
 	respectively.
 */
-func (c Cursor) TemplateArgumentKind(i uint16) TemplateArgumentKind {
+func (c Cursor) TemplateArgumentKind(i uint32) TemplateArgumentKind {
 	return TemplateArgumentKind(C.clang_Cursor_getTemplateArgumentKind(c.c, C.uint(i)))
 }
 
@@ -411,7 +411,7 @@ func (c Cursor) TemplateArgumentKind(i uint16) TemplateArgumentKind {
 	If called with I = 0, "float", will be returned.
 	Invalid types will be returned for I == 1 or 2.
 */
-func (c Cursor) TemplateArgumentType(i uint16) Type {
+func (c Cursor) TemplateArgumentType(i uint32) Type {
 	return Type{C.clang_Cursor_getTemplateArgumentType(c.c, C.uint(i))}
 }
 
@@ -432,7 +432,7 @@ func (c Cursor) TemplateArgumentType(i uint16) Type {
 	If called with I = 1 or 2, -7 or true will be returned, respectively.
 	For I == 0, this function's behavior is undefined.
 */
-func (c Cursor) TemplateArgumentValue(i uint16) int64 {
+func (c Cursor) TemplateArgumentValue(i uint32) int64 {
 	return int64(C.clang_Cursor_getTemplateArgumentValue(c.c, C.uint(i)))
 }
 
@@ -453,7 +453,7 @@ func (c Cursor) TemplateArgumentValue(i uint16) int64 {
 	If called with I = 1 or 2, 2147483649 or true will be returned, respectively.
 	For I == 0, this function's behavior is undefined.
 */
-func (c Cursor) TemplateArgumentUnsignedValue(i uint16) uint64 {
+func (c Cursor) TemplateArgumentUnsignedValue(i uint32) uint64 {
 	return uint64(C.clang_Cursor_getTemplateArgumentUnsignedValue(c.c, C.uint(i)))
 }
 

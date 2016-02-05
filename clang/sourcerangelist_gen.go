@@ -10,8 +10,8 @@ type SourceRangeList struct {
 }
 
 // The number of ranges in the ranges array.
-func (srl SourceRangeList) Count() uint16 {
-	return uint16(srl.c.count)
+func (srl SourceRangeList) Count() uint32 {
+	return uint32(srl.c.count)
 }
 
 // An array of CXSourceRanges.

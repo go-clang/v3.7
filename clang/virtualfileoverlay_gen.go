@@ -16,7 +16,7 @@ type VirtualFileOverlay struct {
 
 	Parameter options is reserved, always pass 0.
 */
-func NewVirtualFileOverlay(options uint16) VirtualFileOverlay {
+func NewVirtualFileOverlay(options uint32) VirtualFileOverlay {
 	return VirtualFileOverlay{C.clang_VirtualFileOverlay_create(C.uint(options))}
 }
 
@@ -31,7 +31,7 @@ func (vfo VirtualFileOverlay) AddFileMapping(virtualPath string, realPath string
 }
 
 // Set the case sensitivity for the CXVirtualFileOverlay object. The CXVirtualFileOverlay object is case-sensitive by default, this option can be used to override the default. Returns 0 for success, non-zero to indicate an error.
-func (vfo VirtualFileOverlay) SetCaseSensitivity(caseSensitive int16) ErrorCode {
+func (vfo VirtualFileOverlay) SetCaseSensitivity(caseSensitive int32) ErrorCode {
 	return ErrorCode(C.clang_VirtualFileOverlay_setCaseSensitivity(vfo.c, C.int(caseSensitive)))
 }
 
@@ -44,14 +44,14 @@ func (vfo VirtualFileOverlay) SetCaseSensitivity(caseSensitive int16) ErrorCode 
 	Parameter out_buffer_size pointer to receive the buffer size.
 	Returns 0 for success, non-zero to indicate an error.
 */
-func (vfo VirtualFileOverlay) WriteToBuffer(options uint16) (string, uint16, ErrorCode) {
+func (vfo VirtualFileOverlay) WriteToBuffer(options uint32) (string, uint32, ErrorCode) {
 	var outBufferPtr *C.char
 	defer C.free(unsafe.Pointer(outBufferPtr))
 	var outBufferSize C.uint
 
 	o := ErrorCode(C.clang_VirtualFileOverlay_writeToBuffer(vfo.c, C.uint(options), &outBufferPtr, &outBufferSize))
 
-	return C.GoString(outBufferPtr), uint16(outBufferSize), o
+	return C.GoString(outBufferPtr), uint32(outBufferSize), o
 }
 
 // Dispose a CXVirtualFileOverlay object.

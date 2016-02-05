@@ -233,8 +233,8 @@ func (t Type) OffsetOf(s string) int64 {
 	Variadic argument packs count as only one argument, and can not be inspected
 	further.
 */
-func (t Type) NumTemplateArguments() int16 {
-	return int16(C.clang_Type_getNumTemplateArguments(t.c))
+func (t Type) NumTemplateArguments() int32 {
+	return int32(C.clang_Type_getNumTemplateArguments(t.c))
 }
 
 /*
@@ -244,7 +244,7 @@ func (t Type) NumTemplateArguments() int16 {
 	This function only returns template type arguments and does not handle
 	template template arguments or variadic packs.
 */
-func (t Type) TemplateArgumentAsType(i uint16) Type {
+func (t Type) TemplateArgumentAsType(i uint32) Type {
 	return Type{C.clang_Type_getTemplateArgumentAsType(t.c, C.uint(i))}
 }
 
