@@ -102,8 +102,8 @@ func (t Type) ResultType() Type {
 
 	If a non-function type is passed in, -1 is returned.
 */
-func (t Type) NumArgTypes() int16 {
-	return int16(C.clang_getNumArgTypes(t.c))
+func (t Type) NumArgTypes() int32 {
+	return int32(C.clang_getNumArgTypes(t.c))
 }
 
 /*
@@ -112,7 +112,7 @@ func (t Type) NumArgTypes() int16 {
 	If a non-function type is passed in or the function does not have enough
 	parameters, an invalid type is returned.
 */
-func (t Type) ArgType(i uint16) Type {
+func (t Type) ArgType(i uint32) Type {
 	return Type{C.clang_getArgType(t.c, C.uint(i))}
 }
 
@@ -233,8 +233,8 @@ func (t Type) OffsetOf(s string) int64 {
 	Variadic argument packs count as only one argument, and can not be inspected
 	further.
 */
-func (t Type) NumTemplateArguments() int16 {
-	return int16(C.clang_Type_getNumTemplateArguments(t.c))
+func (t Type) NumTemplateArguments() int32 {
+	return int32(C.clang_Type_getNumTemplateArguments(t.c))
 }
 
 /*
@@ -244,7 +244,7 @@ func (t Type) NumTemplateArguments() int16 {
 	This function only returns template type arguments and does not handle
 	template template arguments or variadic packs.
 */
-func (t Type) TemplateArgumentAsType(i uint16) Type {
+func (t Type) TemplateArgumentAsType(i uint32) Type {
 	return Type{C.clang_Type_getTemplateArgumentAsType(t.c, C.uint(i))}
 }
 

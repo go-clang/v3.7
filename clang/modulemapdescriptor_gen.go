@@ -16,7 +16,7 @@ type ModuleMapDescriptor struct {
 
 	Parameter options is reserved, always pass 0.
 */
-func NewModuleMapDescriptor(options uint16) ModuleMapDescriptor {
+func NewModuleMapDescriptor(options uint32) ModuleMapDescriptor {
 	return ModuleMapDescriptor{C.clang_ModuleMapDescriptor_create(C.uint(options))}
 }
 
@@ -45,14 +45,14 @@ func (mmd ModuleMapDescriptor) SetUmbrellaHeader(name string) ErrorCode {
 	Parameter out_buffer_size pointer to receive the buffer size.
 	Returns 0 for success, non-zero to indicate an error.
 */
-func (mmd ModuleMapDescriptor) WriteToBuffer(options uint16) (string, uint16, ErrorCode) {
+func (mmd ModuleMapDescriptor) WriteToBuffer(options uint32) (string, uint32, ErrorCode) {
 	var outBufferPtr *C.char
 	defer C.free(unsafe.Pointer(outBufferPtr))
 	var outBufferSize C.uint
 
 	o := ErrorCode(C.clang_ModuleMapDescriptor_writeToBuffer(mmd.c, C.uint(options), &outBufferPtr, &outBufferSize))
 
-	return C.GoString(outBufferPtr), uint16(outBufferSize), o
+	return C.GoString(outBufferPtr), uint32(outBufferSize), o
 }
 
 // Dispose a CXModuleMapDescriptor object.

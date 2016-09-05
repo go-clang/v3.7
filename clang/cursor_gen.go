@@ -56,8 +56,8 @@ func (c Cursor) IsNull() bool {
 }
 
 // Compute a hash value for the given cursor.
-func (c Cursor) HashCursor() uint16 {
-	return uint16(C.clang_hashCursor(c.c))
+func (c Cursor) HashCursor() uint32 {
+	return uint32(C.clang_hashCursor(c.c))
 }
 
 // Retrieve the kind of the given cursor.
@@ -327,8 +327,8 @@ func (c Cursor) EnumConstantDeclUnsignedValue() uint64 {
 
 	If a cursor that is not a bit field declaration is passed in, -1 is returned.
 */
-func (c Cursor) FieldDeclBitWidth() int16 {
-	return int16(C.clang_getFieldDeclBitWidth(c.c))
+func (c Cursor) FieldDeclBitWidth() int32 {
+	return int32(C.clang_getFieldDeclBitWidth(c.c))
 }
 
 /*
@@ -338,8 +338,8 @@ func (c Cursor) FieldDeclBitWidth() int16 {
 	The number of arguments can be determined for calls as well as for
 	declarations of functions or methods. For other cursors -1 is returned.
 */
-func (c Cursor) NumArguments() int16 {
-	return int16(C.clang_Cursor_getNumArguments(c.c))
+func (c Cursor) NumArguments() int32 {
+	return int32(C.clang_Cursor_getNumArguments(c.c))
 }
 
 /*
@@ -349,7 +349,7 @@ func (c Cursor) NumArguments() int16 {
 	of functions or methods. For other cursors and for invalid indices, an
 	invalid cursor is returned.
 */
-func (c Cursor) Argument(i uint16) Cursor {
+func (c Cursor) Argument(i uint32) Cursor {
 	return Cursor{C.clang_Cursor_getArgument(c.c, C.uint(i))}
 }
 
@@ -369,8 +369,8 @@ func (c Cursor) Argument(i uint16) Cursor {
 
 	The value 3 would be returned from this call.
 */
-func (c Cursor) NumTemplateArguments() int16 {
-	return int16(C.clang_Cursor_getNumTemplateArguments(c.c))
+func (c Cursor) NumTemplateArguments() int32 {
+	return int32(C.clang_Cursor_getNumTemplateArguments(c.c))
 }
 
 /*
@@ -389,7 +389,7 @@ func (c Cursor) NumTemplateArguments() int16 {
 	For I = 0, 1, and 2, Type, Integral, and Integral will be returned,
 	respectively.
 */
-func (c Cursor) TemplateArgumentKind(i uint16) TemplateArgumentKind {
+func (c Cursor) TemplateArgumentKind(i uint32) TemplateArgumentKind {
 	return TemplateArgumentKind(C.clang_Cursor_getTemplateArgumentKind(c.c, C.uint(i)))
 }
 
@@ -411,7 +411,7 @@ func (c Cursor) TemplateArgumentKind(i uint16) TemplateArgumentKind {
 	If called with I = 0, "float", will be returned.
 	Invalid types will be returned for I == 1 or 2.
 */
-func (c Cursor) TemplateArgumentType(i uint16) Type {
+func (c Cursor) TemplateArgumentType(i uint32) Type {
 	return Type{C.clang_Cursor_getTemplateArgumentType(c.c, C.uint(i))}
 }
 
@@ -432,7 +432,7 @@ func (c Cursor) TemplateArgumentType(i uint16) Type {
 	If called with I = 1 or 2, -7 or true will be returned, respectively.
 	For I == 0, this function's behavior is undefined.
 */
-func (c Cursor) TemplateArgumentValue(i uint16) int64 {
+func (c Cursor) TemplateArgumentValue(i uint32) int64 {
 	return int64(C.clang_Cursor_getTemplateArgumentValue(c.c, C.uint(i)))
 }
 
@@ -453,7 +453,7 @@ func (c Cursor) TemplateArgumentValue(i uint16) int64 {
 	If called with I = 1 or 2, 2147483649 or true will be returned, respectively.
 	For I == 0, this function's behavior is undefined.
 */
-func (c Cursor) TemplateArgumentUnsignedValue(i uint16) uint64 {
+func (c Cursor) TemplateArgumentUnsignedValue(i uint32) uint64 {
 	return uint64(C.clang_Cursor_getTemplateArgumentUnsignedValue(c.c, C.uint(i)))
 }
 
@@ -542,8 +542,8 @@ func (c Cursor) StorageClass() StorageClass {
 	Returns The number of overloaded declarations referenced by cursor. If it
 	is not a CXCursor_OverloadedDeclRef cursor, returns 0.
 */
-func (c Cursor) NumOverloadedDecls() uint16 {
-	return uint16(C.clang_getNumOverloadedDecls(c.c))
+func (c Cursor) NumOverloadedDecls() uint32 {
+	return uint32(C.clang_getNumOverloadedDecls(c.c))
 }
 
 /*
@@ -560,7 +560,7 @@ func (c Cursor) NumOverloadedDecls() uint16 {
 	associated set of overloaded declarations, or if the index is out of bounds,
 	returns clang_getNullCursor();
 */
-func (c Cursor) OverloadedDecl(index uint16) Cursor {
+func (c Cursor) OverloadedDecl(index uint32) Cursor {
 	return Cursor{C.clang_getOverloadedDecl(c.c, C.uint(index))}
 }
 
@@ -607,7 +607,7 @@ func (c Cursor) Spelling() string {
 
 	Parameter options Reserved.
 */
-func (c Cursor) SpellingNameRange(pieceIndex uint16, options uint16) SourceRange {
+func (c Cursor) SpellingNameRange(pieceIndex uint32, options uint32) SourceRange {
 	return SourceRange{C.clang_Cursor_getSpellingNameRange(c.c, C.uint(pieceIndex), C.uint(options))}
 }
 
@@ -718,8 +718,8 @@ func (c Cursor) CanonicalCursor() Cursor {
 	expression and the cursor is pointing to a selector identifier, or -1
 	otherwise.
 */
-func (c Cursor) SelectorIndex() int16 {
-	return int16(C.clang_Cursor_getObjCSelectorIndex(c.c))
+func (c Cursor) SelectorIndex() int32 {
+	return int32(C.clang_Cursor_getObjCSelectorIndex(c.c))
 }
 
 /*
@@ -751,13 +751,13 @@ func (c Cursor) ReceiverType() Type {
 
 	Parameter reserved Reserved for future use, pass 0.
 */
-func (c Cursor) PropertyAttributes(reserved uint16) uint16 {
-	return uint16(C.clang_Cursor_getObjCPropertyAttributes(c.c, C.uint(reserved)))
+func (c Cursor) PropertyAttributes(reserved uint32) uint32 {
+	return uint32(C.clang_Cursor_getObjCPropertyAttributes(c.c, C.uint(reserved)))
 }
 
 // Given a cursor that represents an Objective-C method or parameter declaration, return the associated Objective-C qualifiers for the return type or the parameter respectively. The bits are formed from CXObjCDeclQualifierKind.
-func (c Cursor) DeclQualifiers() uint16 {
-	return uint16(C.clang_Cursor_getObjCDeclQualifiers(c.c))
+func (c Cursor) DeclQualifiers() uint32 {
+	return uint32(C.clang_Cursor_getObjCDeclQualifiers(c.c))
 }
 
 // Given a cursor that represents an Objective-C method or property declaration, return non-zero if the declaration was affected by "@optional". Returns zero if the cursor is not such a declaration or it is "@required".
@@ -907,11 +907,11 @@ func (c Cursor) SpecializedCursorTemplate() Cursor {
 	Returns The piece of the name pointed to by the given cursor. If there is no
 	name, or if the PieceIndex is out-of-range, a null-cursor will be returned.
 */
-func (c Cursor) ReferenceNameRange(nameFlags uint16, pieceIndex uint16) SourceRange {
+func (c Cursor) ReferenceNameRange(nameFlags uint32, pieceIndex uint32) SourceRange {
 	return SourceRange{C.clang_getCursorReferenceNameRange(c.c, C.uint(nameFlags), C.uint(pieceIndex))}
 }
 
-func (c Cursor) DefinitionSpellingAndExtent() (string, string, uint16, uint16, uint16, uint16) {
+func (c Cursor) DefinitionSpellingAndExtent() (string, string, uint32, uint32, uint32, uint32) {
 	var startBuf *C.char
 	defer C.free(unsafe.Pointer(startBuf))
 	var endBuf *C.char
@@ -923,7 +923,7 @@ func (c Cursor) DefinitionSpellingAndExtent() (string, string, uint16, uint16, u
 
 	C.clang_getDefinitionSpellingAndExtent(c.c, &startBuf, &endBuf, &startLine, &startColumn, &endLine, &endColumn)
 
-	return C.GoString(startBuf), C.GoString(endBuf), uint16(startLine), uint16(startColumn), uint16(endLine), uint16(endColumn)
+	return C.GoString(startBuf), C.GoString(endBuf), uint32(startLine), uint32(startColumn), uint32(endLine), uint32(endColumn)
 }
 
 /*
@@ -957,6 +957,6 @@ func (c Cursor) FindReferencesInFile(file File, visitor CursorAndRangeVisitor) R
 	return Result(C.clang_findReferencesInFile(c.c, file.c, visitor.c))
 }
 
-func (c Cursor) Xdata() int16 {
-	return int16(c.c.xdata)
+func (c Cursor) Xdata() int32 {
+	return int32(c.c.xdata)
 }
