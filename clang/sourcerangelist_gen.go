@@ -3,6 +3,10 @@ package clang
 // #include "./clang-c/Index.h"
 // #include "go-clang.h"
 import "C"
+import (
+	"reflect"
+	"unsafe"
+)
 
 // Identifies an array of ranges.
 type SourceRangeList struct {
@@ -15,13 +19,12 @@ func (srl SourceRangeList) Count() uint32 {
 }
 
 // An array of CXSourceRanges.
-func (srl SourceRangeList) Ranges() *SourceRange {
-	o := srl.c.ranges
+func (srl SourceRangeList) Ranges() []SourceRange {
+	var s []SourceRange
+	gos_s := (*reflect.SliceHeader)(unsafe.Pointer(&s))
+	gos_s.Cap = int(srl.c.count)
+	gos_s.Len = int(srl.c.count)
+	gos_s.Data = uintptr(unsafe.Pointer(srl.c.ranges))
 
-	var gop_o *SourceRange
-	if o != nil {
-		gop_o = &SourceRange{*o}
-	}
-
-	return gop_o
+	return s
 }
