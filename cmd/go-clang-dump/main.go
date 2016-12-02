@@ -16,8 +16,17 @@ import (
 var fname = flag.String("fname", "", "the file to analyze")
 
 func main() {
+	os.Exit(cmd(os.Args[1:]))
+}
+
+func cmd(args []string) int {
 	fmt.Printf(":: go-clang-dump...\n")
-	flag.Parse()
+	if err := flag.CommandLine.Parse(args); err != nil {
+		fmt.Printf("ERROR: %s", err)
+
+		return 1
+	}
+
 	fmt.Printf(":: fname: %s\n", *fname)
 	fmt.Printf(":: args: %v\n", flag.Args())
 
@@ -25,22 +34,28 @@ func main() {
 		flag.Usage()
 		fmt.Printf("please provide a file name to analyze\n")
 
-		os.Exit(1)
+		return 1
 	}
 
 	idx := clang.NewIndex(0, 1)
 	defer idx.Dispose()
 
-	args := []string{}
+	tuArgs := []string{}
 	if len(flag.Args()) > 0 && flag.Args()[0] == "-" {
-		args = make([]string, len(flag.Args()[1:]))
-		copy(args, flag.Args()[1:])
+		tuArgs = make([]string, len(flag.Args()[1:]))
+		copy(tuArgs, flag.Args()[1:])
 	}
 
-	tu := idx.ParseTranslationUnit(*fname, args, nil, 0)
+	tu := idx.ParseTranslationUnit(*fname, tuArgs, nil, 0)
 	defer tu.Dispose()
 
 	fmt.Printf("tu: %s\n", tu.Spelling())
+
+	diagnostics := tu.Diagnostics()
+	for _, d := range diagnostics {
+		fmt.Println("PROBLEM:", d.Spelling())
+	}
+
 	cursor := tu.TranslationUnitCursor()
 	fmt.Printf("cursor-isnull: %v\n", cursor.IsNull())
 	fmt.Printf("cursor: %s\n", cursor.Spelling())
@@ -65,5 +80,11 @@ func main() {
 		return clang.ChildVisit_Continue
 	})
 
+	if len(diagnostics) > 0 {
+		fmt.Println("NOTE: There were problems while analyzing the given file")
+	}
+
 	fmt.Printf(":: bye.\n")
+
+	return 0
 }
